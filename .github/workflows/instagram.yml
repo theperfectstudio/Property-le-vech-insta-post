@@ -19,6 +19,10 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
+        - name: Write service-account-key.json from secret
+  run: echo "$SERVICE_ACCOUNT_B64" | base64 --decode > service-account-key.json
+  env:
+    SERVICE_ACCOUNT_B64: ${{ secrets.SERVICE_ACCOUNT_B64 }}
 
       - name: Run Script
         env:
