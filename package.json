@@ -1,0 +1,10 @@
+{
+  "name": "instagram-auto-post",
+  "version": "1.0.0",
+  "description": "Post to Instagram from Firestore using GitHub Actions",
+  "main": "post-to-instagram.js",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "firebase-admin": "^11.10.1"
+  }
+}
