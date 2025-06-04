@@ -8,6 +8,7 @@ on:
 jobs:
   instagram-post:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -16,12 +17,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+
       - name: Install Dependencies
         run: npm install
-        - name: Write service-account-key.json from secret
-  run: echo "$SERVICE_ACCOUNT_B64" | base64 --decode > service-account-key.json
-  env:
-    SERVICE_ACCOUNT_B64: ${{ secrets.SERVICE_ACCOUNT_B64 }}
+
+      - name: Write service-account-key.json from secret
+        run: echo "$SERVICE_ACCOUNT_B64" | base64 --decode > service-account-key.json
+        env:
+          SERVICE_ACCOUNT_B64: ${{ secrets.SERVICE_ACCOUNT_B64 }}
 
       - name: Run Script
         env:
