@@ -59,3 +59,20 @@ async function postToInstagram() {
 }
 
 postToInstagram();
+    {
+      params: {
+        creation_id: creationId,
+        access_token: ACCESS_TOKEN
+      }
+    }
+  );
+
+  await db.collection("properties").doc(doc.id).update({
+    postedToInstagram: true,
+    postedAt: admin.firestore.FieldValue.serverTimestamp()
+  });
+
+  console.log("✅ Posted to Instagram:", data.caption);
+}
+
+postToInstagram();
