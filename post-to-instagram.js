@@ -1,6 +1,6 @@
-require('dotenv').config(); // Optional, only if you're using a .env file
 const axios = require('axios');
 
+// ✅ Secrets provided via GitHub Actions
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
 const IG_USER_ID = process.env.IG_USER_ID;
 
@@ -9,16 +9,15 @@ if (!ACCESS_TOKEN || !IG_USER_ID) {
   process.exit(1);
 }
 
-// Sample property post (you would replace this logic with your Firestore fetch)
+// Example property post — replace with your Firestore data
 const property = {
   imageUrl: "https://example.com/image.jpg",
-  caption: "🌟 New Property for Sale in Jamnagar! ₹5,00,000 per Bigha 🏡📍Contact Now!",
+  caption: "🏡 New Property in Jamnagar! ₹5,00,000 per Bigha. Contact us now!",
 };
 
-// Upload media to Instagram
 async function postToInstagram(property) {
   try {
-    // Step 1: Create media container
+    // 1. Create Media Container
     const mediaResponse = await axios.post(
       `https://graph.facebook.com/v19.0/${IG_USER_ID}/media`,
       {
@@ -30,7 +29,7 @@ async function postToInstagram(property) {
 
     const creationId = mediaResponse.data.id;
 
-    // Step 2: Publish the media
+    // 2. Publish Media
     const publishResponse = await axios.post(
       `https://graph.facebook.com/v19.0/${IG_USER_ID}/media_publish`,
       {
@@ -39,9 +38,9 @@ async function postToInstagram(property) {
       }
     );
 
-    console.log("✅ Instagram post published:", publishResponse.data);
+    console.log("✅ Post published successfully:", publishResponse.data);
   } catch (err) {
-    console.error("❌ Failed to post on Instagram:", err.response?.data || err.message);
+    console.error("❌ Instagram API Error:", err.response?.data || err.message);
   }
 }
 
