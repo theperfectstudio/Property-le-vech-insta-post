@@ -8,8 +8,8 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
-const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
-const IG_USER_ID = process.env.IG_USER_ID;
+const process.env.ACCESS_TOKEN = process.env.process.env.ACCESS_TOKEN;
+const process.env.IG_USER_ID = process.env.process.env.IG_USER_ID;
 
 async function postToInstagram() {
   const snapshot = await db.collection("properties")
@@ -26,13 +26,13 @@ async function postToInstagram() {
   const data = doc.data();
 
   const mediaRes = await axios.post(
-    `https://graph.facebook.com/v18.0/${IG_USER_ID}/media`,
+    `https://graph.facebook.com/v18.0/${process.env.IG_USER_ID}/media`,
     null,
     {
       params: {
         image_url: data.imageUrl,
         caption: data.caption,
-        access_token: ACCESS_TOKEN
+        access_token: process.env.ACCESS_TOKEN
       }
     }
   );
@@ -40,29 +40,12 @@ async function postToInstagram() {
   const creationId = mediaRes.data.id;
 
   await axios.post(
-    `https://graph.facebook.com/v18.0/${IG_USER_ID}/media_publish`,
+    `https://graph.facebook.com/v18.0/${process.env.IG_USER_ID}/media_publish`,
     null,
     {
       params: {
         creation_id: creationId,
-        access_token: ACCESS_TOKEN
-      }
-    }
-  );
-
-  await db.collection("properties").doc(doc.id).update({
-    postedToInstagram: true,
-    postedAt: admin.firestore.FieldValue.serverTimestamp()
-  });
-
-  console.log("✅ Posted to Instagram:", data.caption);
-}
-
-postToInstagram();
-    {
-      params: {
-        creation_id: creationId,
-        access_token: ACCESS_TOKEN
+        access_token: process.env.ACCESS_TOKEN
       }
     }
   );
