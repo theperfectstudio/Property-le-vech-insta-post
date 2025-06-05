@@ -2,32 +2,33 @@ name: Post to Instagram
 
 on:
   schedule:
-    - cron: '0 10 * * *'  # Every day at 10 AM UTC
-  workflow_dispatch:
+    - cron: '0 10 * * *'  # ⏰ Every day at 10 AM UTC
+  workflow_dispatch:       # ✅ Manual trigger supported
 
 jobs:
   instagram-post:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: 📥 Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: 🛠️ Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Install Dependencies
+      - name: 📦 Install Dependencies
         run: npm install
 
-      - name: Write service-account-key.json from secret
+      - name: 🔐 Write Firebase Admin SDK Key
         run: echo "$SERVICE_ACCOUNT_B64" | base64 --decode > service-account-key.json
         env:
           SERVICE_ACCOUNT_B64: ${{ secrets.SERVICE_ACCOUNT_B64 }}
 
-      - name: Run Script
+      - name: 🚀 Run Instagram Auto Poster
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: node post-to-instagram.js
