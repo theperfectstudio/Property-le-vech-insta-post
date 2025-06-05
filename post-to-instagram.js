@@ -1,14 +1,8 @@
-require('dotenv').config(); // Load environment variables
+require('dotenv').config();
 const axios = require('axios');
-const { OpenAI } = require('openai');
 
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
 const IG_USER_ID = process.env.IG_USER_ID;
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-3.5-turbo'; // fallback model
-
-// ✅ Setup OpenAI
-const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 
 // 🔍 Example property data – replace with Firestore data later
 const property = {
@@ -19,31 +13,23 @@ const property = {
   area: '3',
   pricePerUnit: '600000',
   finalPrice: '1800000',
-  imageUrl: 'https://example.com/sample.jpg', // 🔁 Replace with real image
+  imageUrl: 'https://example.com/sample.jpg', // Replace with real property image
 };
 
-async function generateCaption(property) {
-  const prompt = `Write a short, attractive Instagram caption in English to promote a property listing. Include emoji and the following:
-- Property type: ${property.propertyType}
-- Village: ${property.village}
-- District: ${property.district}
-- Area: ${property.area} Bigha
-- Price per Bigha: ₹${property.pricePerUnit}
-- Total Price: ₹${property.finalPrice}
-Add a call to action to contact or DM.`;
+// 📝 Custom caption logic (no OpenAI)
+function generateSimpleCaption(property) {
+  return `📍 Location: ${property.village}, ${property.taluka}, ${property.district}
+🏡 Type: ${property.propertyType}
+📏 Area: ${property.area} Bigha
+💰 ₹${Number(property.pricePerUnit).toLocaleString()} per Bigha
+🧮 Total: ₹${Number(property.finalPrice).toLocaleString()}
 
-  const completion = await openai.chat.completions.create({
-    model: OPENAI_MODEL,
-    messages: [{ role: 'user', content: prompt }],
-    temperature: 0.7,
-  });
-
-  return completion.choices[0].message.content.trim();
+📞 Contact us for more info or DM now! #PropertyLeVech #GujaratProperty`;
 }
 
 async function postToInstagram(property) {
   try {
-    const caption = await generateCaption(property);
+    const caption = generateSimpleCaption(property);
 
     const mediaRes = await axios.post(
       `https://graph.facebook.com/v19.0/${IG_USER_ID}/media`,
