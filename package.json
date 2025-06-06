@@ -1,15 +1,14 @@
 {
-  "name": "property-le-vech-instagram-auto-post",
+  "name": "render-instagram-poster",
   "version": "1.0.0",
-  "description": "Instagram auto-post script for Property Le Vech using OpenAI, Firebase and Graph API",
-  "main": "post-to-instagram.js",
+  "type": "module",
   "scripts": {
-    "start": "node post-to-instagram.js"
+    "start": "node main.js"
   },
   "dependencies": {
-    "axios": "^1.6.7",
-    "dotenv": "^16.4.5",
-    "firebase-admin": "^11.11.1",
-    "openai": "^4.20.0"
+    "dotenv": "^16.0.3",
+    "firebase-admin": "^11.5.0",
+    "node-fetch": "^3.3.2",
+    "puppeteer": "^21.3.8"
   }
 }

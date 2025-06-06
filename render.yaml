@@ -1,0 +1,6 @@
+services: []
+cron:
+  - name: post-to-instagram
+    schedule: "@hourly"
+    command: "npm start"
+    envVars: []
